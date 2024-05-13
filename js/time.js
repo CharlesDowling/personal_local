@@ -1,1 +1,1 @@
-
+document.getElementById("time1").innerHTML = "Hello World!";
