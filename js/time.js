@@ -31,13 +31,16 @@ function update_time(){
     document.getElementById("EET").innerText = utc_hour_conv(2, minutes, hours) + ":" + seconds;
 
     document.getElementById("ADT").innerText = utc_hour_conv(-3, minutes, hours) + ":" + seconds;
+    document.getElementById("NFST").innerText = utc_hour_conv( -3.5, minutes, hours) + ":" + seconds;
     document.getElementById("MT").innerText = utc_hour_conv(3, minutes, hours) + ":" + seconds;
+    document.getElementById("IST").innerText = utc_hour_conv(3, minutes, hours) + ":" + seconds;
 
     document.getElementById("AST").innerText = utc_hour_conv(-4, minutes, hours) + ":" + seconds;
     document.getElementById("GT").innerText = utc_hour_conv(4, minutes,hours) + ":" + seconds;
 
     document.getElementById("EST").innerText = utc_hour_conv(-5, minutes, hours) + ":" + seconds;
     document.getElementById("KT").innerText = utc_hour_conv(5, minutes, hours) + ":" + seconds;
+    document.getElementById("INST").innerText = utc_hour_conv(5.5, minutes, hours) + ":" + seconds;
 
     document.getElementById("IST").innerText = utc_hour_conv(5.5, minutes, hours) + ":" + seconds;
 
@@ -51,6 +54,7 @@ function update_time(){
     document.getElementById("CHST").innerText = utc_hour_conv(8, minutes, hours) + ":" + seconds;
 
     document.getElementById("AKST").innerText = utc_hour_conv( -9, minutes, hours) + ":" + seconds;
+    document.getElementById("MQT").innerText = utc_hour_conv( -9.5, minutes, hours) + ":" + seconds;
     document.getElementById("JST").innerText = utc_hour_conv( 9, minutes, hours) + ":" + seconds;
 
     document.getElementById("HST").innerText = utc_hour_conv( -10, minutes, hours) + ":" +seconds;
@@ -65,25 +69,35 @@ function update_time(){
 }
 
 function utc_hour_conv(time_offset, minutes, utc_hours){
+
+    //Adjust time relative to time zone
     utc_hours = utc_hours + time_offset;
+
+    //Increases time if time is negative
     if ( utc_hours < 0){
-        utc_hours = utc_hours + 12;
-    }
-    //Modulous for more than integer
-    if ( (utc_hours % 1) > 0){
-        console.log("mod: " + (utc_hours % 1));
-        minutes = minutes + (60 * (utc_hours % 1));
-        console.log("Minutes: " + minutes);
-        utc_hours = utc_hours - (utc_hours % 1);
-        console.log("Hours: " + utc_hours);
+        utc_hours = utc_hours + 24;
     }
 
+    //Modulous for more than integer
+    if ( (utc_hours % 1) > 0){
+        
+        minutes = minutes + (60 * (utc_hours % 1));
+        
+        utc_hours = utc_hours - (utc_hours % 1);
+        
+    }
+
+    //Increases hour if minutes is more than 60
     if (minutes > 60){
         utc_hours = utc_hours + 1;
         minutes = minutes - 60;
     }
 
+    //Removes time if time is more than a day (24 hours)
+    if (utc_hours > 23) {
+        utc_hours = utc_hours - 24;
+    }
 
-    //Returns hours and seconds
+    //Returns hours and seconds string for display
     return utc_hours + ":" + minutes ;
 }
